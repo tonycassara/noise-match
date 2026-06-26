@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { ClipboardCopy, ClipboardPaste, X } from 'lucide-react'
+import { Copy, Import, X } from 'lucide-react'
 import './App.css'
 
 import { NoiseMatchAudioEngine } from './audioEngine'
@@ -587,18 +587,20 @@ function App() {
                 className="icon-action"
                 onClick={copyCurrentConfigToClipboard}
                 aria-label="Copy current settings to clipboard"
+                data-tooltip="Copy current settings"
                 title="Copy current settings to clipboard"
               >
-                <ClipboardCopy aria-hidden="true" focusable="false" />
+                <Copy aria-hidden="true" focusable="false" />
               </button>
               <button
                 type="button"
                 className="icon-action"
                 onClick={importConfigFromClipboard}
                 aria-label="Import from clipboard"
+                data-tooltip="Import from clipboard"
                 title="Import from clipboard"
               >
-                <ClipboardPaste aria-hidden="true" focusable="false" />
+                <Import aria-hidden="true" focusable="false" />
               </button>
             </div>
           </div>

@@ -578,12 +578,65 @@ input[type='range'] {
 .icon-action {
   min-height: 36px;
   padding: 7px;
+  position: relative;
   width: 38px;
 }
 
 .icon-action svg {
   height: 19px;
   width: 19px;
+}
+
+.icon-action::after {
+  background: var(--text-h);
+  border-radius: 6px;
+  bottom: calc(100% + 8px);
+  color: #fff;
+  content: attr(data-tooltip);
+  font-size: 12px;
+  font-weight: 700;
+  left: 50%;
+  line-height: 1.2;
+  max-width: 160px;
+  opacity: 0;
+  padding: 6px 8px;
+  pointer-events: none;
+  position: absolute;
+  text-align: center;
+  transform: translate(-50%, 4px);
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease;
+  visibility: hidden;
+  white-space: nowrap;
+  z-index: 4;
+}
+
+.icon-action::before {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--text-h);
+  bottom: calc(100% + 3px);
+  content: '';
+  left: 50%;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: translate(-50%, 4px);
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease;
+  visibility: hidden;
+  z-index: 4;
+}
+
+.icon-action:hover::after,
+.icon-action:focus-visible::after,
+.icon-action:hover::before,
+.icon-action:focus-visible::before {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  visibility: visible;
 }
 
 .save-list {
