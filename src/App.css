@@ -549,15 +549,37 @@ input[type='range'] {
   flex: 1;
 }
 
-.template-tools {
+.template-transfer {
+  align-items: center;
+  border-top: 1px solid var(--border);
   display: flex;
-  gap: 8px;
-  margin-top: 8px;
+  justify-content: space-between;
+  margin: 0 12px 18px;
+  padding-top: 12px;
 }
 
-.template-tools button {
-  flex: 1;
-  min-width: 0;
+.template-transfer span {
+  color: var(--text-m);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.template-transfer-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-action {
+  min-height: 36px;
+  padding: 7px;
+  width: 38px;
+}
+
+.icon-action svg {
+  height: 18px;
+  width: 18px;
 }
 
 .save-list {
