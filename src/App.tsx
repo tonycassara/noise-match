@@ -18,6 +18,8 @@ import {
   getAudibleTonePartials,
   getAudioConfigSignature,
   getConfigHistorySignature,
+  exportPortableTemplate,
+  importPortableTemplate,
   overwriteTemplateById,
   pushConfigHistory,
   redoConfigHistory,
@@ -321,6 +323,34 @@ function App() {
     persistTemplates(saveTemplateToList(templates, template, true), template.name)
   }
 
+  async function copyConfigToClipboard(template: MatchConfig) {
+    try {
+      await navigator.clipboard.writeText(exportPortableTemplate(template))
+      setStorageStatus(`Copied "${template.name}" to clipboard`)
+    } catch {
+      setStorageStatus('Could not copy template to clipboard')
+    }
+  }
+
+  async function copyCurrentConfigToClipboard() {
+    const name = templateName.trim() || config.name
+
+    await copyConfigToClipboard(withSummary({ ...config, name }))
+  }
+
+  async function importConfigFromClipboard() {
+    try {
+      const clipboardText = await navigator.clipboard.readText()
+      const imported = importPortableTemplate(clipboardText)
+
+      replaceConfig(touchConfig(imported))
+      setTemplateName(imported.name)
+      setStorageStatus(`Imported "${imported.name}" from clipboard`)
+    } catch {
+      setStorageStatus('Clipboard does not contain a Noise Match template')
+    }
+  }
+
   function deleteTemplate(templateId: string) {
     const nextTemplates = templates.filter((template) => template.id !== templateId)
     setTemplates(nextTemplates)
@@ -543,6 +573,14 @@ function App() {
                 Save
               </button>
             </div>
+            <div className="template-tools">
+              <button type="button" onClick={copyCurrentConfigToClipboard}>
+                Copy current
+              </button>
+              <button type="button" onClick={importConfigFromClipboard}>
+                Import clipboard
+              </button>
+            </div>
           </section>
 
           <SaveList title="Templates" empty="No templates saved">
@@ -551,6 +589,7 @@ function App() {
                 key={template.id}
                 config={template}
                 onLoad={() => loadConfig(template)}
+                onCopy={() => copyConfigToClipboard(template)}
                 onSave={() => confirmTemplateOverwrite(template)}
                 onDelete={() => confirmTemplateDelete(template)}
               />
@@ -1197,12 +1236,14 @@ function SaveList({
 function SaveItem({
   config,
   onLoad,
+  onCopy,
   onSave,
   onDelete,
   subtle = false,
 }: {
   config: MatchConfig
   onLoad: () => void
+  onCopy?: () => void
   onSave?: () => void
   onDelete?: () => void
   subtle?: boolean
@@ -1228,6 +1269,11 @@ function SaveItem({
         <button type="button" onClick={onLoad}>
           Load
         </button>
+        {onCopy ? (
+          <button type="button" onClick={onCopy}>
+            Copy
+          </button>
+        ) : null}
         {onSave ? (
           <button type="button" onClick={onSave}>
             Save

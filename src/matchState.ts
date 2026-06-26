@@ -56,6 +56,12 @@ export type ConfigHistory = {
   future: MatchConfig[]
 }
 
+export type PortableTemplate = {
+  kind: 'noise-match-template'
+  version: 1
+  config: MatchConfig
+}
+
 export const MAX_AUTOSAVES = 5
 export const MAX_CONFIG_HISTORY = 50
 export const FREQUENCY_RANGE = {
@@ -240,6 +246,30 @@ export function redoConfigHistory(
       past: [...history.past, current].slice(-MAX_CONFIG_HISTORY),
       future: history.future.slice(1),
     },
+  }
+}
+
+export function exportPortableTemplate(config: MatchConfig) {
+  const payload: PortableTemplate = {
+    kind: 'noise-match-template',
+    version: 1,
+    config: withSummary(config),
+  }
+
+  return JSON.stringify(payload, null, 2)
+}
+
+export function importPortableTemplate(value: string): MatchConfig {
+  try {
+    const parsed = JSON.parse(value)
+
+    if (!isRecord(parsed) || parsed.kind !== 'noise-match-template' || parsed.version !== 1) {
+      throw new Error('Unsupported template payload')
+    }
+
+    return normalizeImportedConfig(parsed.config)
+  } catch {
+    throw new Error('Clipboard does not contain a valid Noise Match template.')
   }
 }
 
@@ -444,4 +474,94 @@ function normalizeChannel(channel: ChannelConfig): ChannelConfig {
     ...channel,
     modulation: channel.modulation ?? getDefaultModulation(),
   }
+}
+
+function normalizeImportedConfig(config: unknown): MatchConfig {
+  if (!isRecord(config) || !Array.isArray(config.channels)) {
+    throw new Error('Invalid config')
+  }
+
+  const imported: MatchConfig = {
+    ...createDefaultConfig(),
+    ...config,
+    id: typeof config.id === 'string' ? config.id : createId(),
+    name: typeof config.name === 'string' && config.name.trim() ? config.name : 'Imported match',
+    masterGain: readNumber(config.masterGain, MASTER_GAIN_RANGE.default),
+    softeningAmount: readNumber(config.softeningAmount, SOFTENING_RANGE.default),
+    updatedAt: new Date().toISOString(),
+    channels: config.channels.map((channel, index) => normalizeImportedChannel(channel, index)),
+    summary: '',
+  }
+
+  return withSummary(imported)
+}
+
+function normalizeImportedChannel(channel: unknown, index: number): ChannelConfig {
+  const base = createDefaultChannel(createId('source'), index)
+
+  if (!isRecord(channel)) {
+    return base
+  }
+
+  const sourceKind = channel.sourceKind === 'noise' ? 'noise' : 'oscillator'
+  const waveform = isWaveform(channel.waveform) ? channel.waveform : base.waveform
+  const noiseKind = isNoiseKind(channel.noiseKind) ? channel.noiseKind : base.noiseKind
+
+  return {
+    ...base,
+    id: typeof channel.id === 'string' ? channel.id : base.id,
+    label: typeof channel.label === 'string' ? channel.label : base.label,
+    sourceKind,
+    waveform,
+    noiseKind,
+    frequencyHz: readNumber(channel.frequencyHz, base.frequencyHz),
+    gain: readNumber(channel.gain, base.gain),
+    pan: readNumber(channel.pan, base.pan),
+    filter: isRecord(channel.filter)
+      ? {
+          enabled: typeof channel.filter.enabled === 'boolean' ? channel.filter.enabled : base.filter.enabled,
+          type: isFilterType(channel.filter.type) ? channel.filter.type : base.filter.type,
+          frequencyHz: readNumber(channel.filter.frequencyHz, base.filter.frequencyHz),
+          q: readNumber(channel.filter.q, base.filter.q),
+          gainDb: readNumber(channel.filter.gainDb, base.filter.gainDb),
+        }
+      : base.filter,
+    modulation: isRecord(channel.modulation)
+      ? {
+          ...getDefaultModulation(isModulationMode(channel.modulation.mode) ? channel.modulation.mode : 'off'),
+          rateHz: readNumber(channel.modulation.rateHz, base.modulation.rateHz),
+          depth: readNumber(channel.modulation.depth, base.modulation.depth),
+          chirpRateHz: readNumber(channel.modulation.chirpRateHz, base.modulation.chirpRateHz),
+          chirpDuty: readNumber(channel.modulation.chirpDuty, base.modulation.chirpDuty),
+          attack: readNumber(channel.modulation.attack, base.modulation.attack),
+        }
+      : base.modulation,
+    muted: typeof channel.muted === 'boolean' ? channel.muted : base.muted,
+    soloed: typeof channel.soloed === 'boolean' ? channel.soloed : base.soloed,
+    granularity: channel.granularity === '2x' ? '2x' : '1x',
+  }
+}
+
+function readNumber(value: unknown, fallback: number) {
+  return typeof value === 'number' && Number.isFinite(value) ? value : fallback
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
+function isWaveform(value: unknown): value is Waveform {
+  return value === 'sine' || value === 'square' || value === 'sawtooth' || value === 'triangle'
+}
+
+function isNoiseKind(value: unknown): value is NoiseKind {
+  return value === 'white' || value === 'pink' || value === 'narrow'
+}
+
+function isFilterType(value: unknown): value is FilterType {
+  return value === 'lowpass' || value === 'highpass' || value === 'bandpass' || value === 'peaking'
+}
+
+function isModulationMode(value: unknown): value is ModulationMode {
+  return value === 'off' || value === 'tremolo' || value === 'chirp'
 }

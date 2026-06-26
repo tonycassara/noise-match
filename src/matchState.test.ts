@@ -18,6 +18,8 @@ import {
   getAudibleTonePartials,
   getAudioConfigSignature,
   getConfigHistorySignature,
+  exportPortableTemplate,
+  importPortableTemplate,
   pushConfigHistory,
   redoConfigHistory,
   undoConfigHistory,
@@ -211,6 +213,39 @@ describe('match state helpers', () => {
 
     assert.equal(getConfigHistorySignature(config), getConfigHistorySignature(derivedOnly))
     assert.notEqual(getConfigHistorySignature(config), getConfigHistorySignature(renamed))
+  })
+
+  it('exports and imports portable template JSON', () => {
+    const config = {
+      ...createDefaultConfig(),
+      name: 'Brave transfer',
+      channels: [
+        {
+          ...createDefaultChannel('source-a', 0),
+          label: 'Left ring',
+          frequencyHz: 12679,
+          gain: 0.22,
+        },
+      ],
+    }
+
+    const portable = exportPortableTemplate(config)
+    const imported = importPortableTemplate(portable)
+
+    assert.equal(imported.name, 'Brave transfer')
+    assert.equal(imported.channels.length, 1)
+    assert.equal(imported.channels[0].label, 'Left ring')
+    assert.equal(imported.channels[0].frequencyHz, 12679)
+    assert.equal(imported.channels[0].gain, 0.22)
+    assert.match(imported.summary, /1 source/)
+  })
+
+  it('rejects invalid portable template JSON', () => {
+    assert.throws(() => importPortableTemplate('not json'), /valid Noise Match template/)
+    assert.throws(
+      () => importPortableTemplate(JSON.stringify({ kind: 'other', config: createDefaultConfig() })),
+      /valid Noise Match template/,
+    )
   })
 
   it('duplicates a channel with the same settings and a fresh identity', () => {

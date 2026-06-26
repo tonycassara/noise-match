@@ -545,6 +545,17 @@ input[type='range'] {
   flex: 1;
 }
 
+.template-tools {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.template-tools button {
+  flex: 1;
+  min-width: 0;
+}
+
 .save-list {
   margin-top: 18px;
   text-align: left;
