@@ -41,6 +41,35 @@
   font-weight: 650;
 }
 
+.topbar-actions {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.github-link {
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--soft-shadow);
+  color: var(--text-h);
+  display: inline-flex;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+
+.github-link:hover {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+}
+
+.github-link svg {
+  height: 20px;
+  width: 20px;
+}
+
 .eyebrow {
   color: var(--accent);
   font-size: 13px;
@@ -311,7 +340,8 @@ input[type='text'] {
 
 input:focus-visible,
 select:focus-visible,
-button:focus-visible {
+button:focus-visible,
+.github-link:focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
@@ -635,6 +665,10 @@ input[type='range'] {
   .topbar {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .topbar-actions {
+    width: 100%;
   }
 
   .section-heading {
