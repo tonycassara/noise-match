@@ -2,6 +2,8 @@
 
 A browser-based tinnitus noise matching workstation built with React, TypeScript, Vite, and native Web Audio.
 
+[Live demo](https://tonycassara.github.io/noise-match/)
+
 ![Noise Match workstation](public/screenshots/noise-match-workstation.png)
 
 ## Features
