@@ -1,32 +1,35 @@
-# React + TypeScript + Vite
+# Noise Match
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A browser-based tinnitus noise matching workstation built with React, TypeScript, Vite, and native Web Audio.
 
-Currently, two official plugins are available:
+![Noise Match workstation](public/screenshots/noise-match-workstation.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- In-browser tone, white noise, pink noise, and narrow-band noise generation
+- Mixer-style source strips with gain faders, typed gain percentages, pan, mute, solo, duplicate, and delete confirmation
+- Oscillator waveforms, filter/EQ controls, softening, and AudioWorklet-powered tremolo/chirp modulation
+- Stereo field and spectrum visualizer
+- Undo/redo buttons plus Cmd/Ctrl keyboard shortcuts
+- IndexedDB persistence for current work, autosaves, and named templates
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Safety
 
-## Expanding the Oxlint configuration
+Start low and adjust carefully. Browser audio output is not calibrated and can vary by headphones, speakers, device, browser, and system volume.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Development
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+This project uses Yarn 4 via Corepack.
+
+```bash
+corepack yarn install
+corepack yarn dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Checks
+
+```bash
+corepack yarn test
+corepack yarn build
+corepack yarn lint
+```
