@@ -223,7 +223,7 @@ button[aria-pressed='true'] {
   display: flex;
   flex-direction: column;
   gap: 13px;
-  padding: 14px 38px 14px 14px;
+  padding: 14px;
   position: relative;
   text-align: left;
 }
@@ -265,6 +265,12 @@ button[aria-pressed='true'] {
 .audible-pill.solo {
   background: color-mix(in srgb, var(--safe) 14%, white);
   color: #21665d;
+}
+
+.channel-state-actions {
+  align-items: center;
+  display: flex;
+  gap: 6px;
 }
 
 label,
@@ -477,6 +483,7 @@ input[type='range'] {
   padding: 8px 6px;
 }
 
+.channel-delete,
 .corner-delete {
   border-radius: 999px;
   font-size: 20px;
@@ -484,10 +491,13 @@ input[type='range'] {
   line-height: 1;
   min-height: 0;
   padding: 0;
+  width: 28px;
+}
+
+.corner-delete {
   position: absolute;
   right: 10px;
   top: 10px;
-  width: 28px;
 }
 
 .save-box {

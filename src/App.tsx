@@ -667,15 +667,6 @@ function ChannelStrip({
 
   return (
     <article className="channel-strip">
-      <button
-        type="button"
-        className="corner-delete"
-        aria-label={`Remove ${channel.label}`}
-        disabled={!canRemove}
-        onClick={onRemove}
-      >
-        ×
-      </button>
       <div className="channel-header">
         <div>
           <span className="channel-index">{String(index + 1).padStart(2, '0')}</span>
@@ -686,7 +677,18 @@ function ChannelStrip({
             onChange={(event) => onChange((current) => ({ ...current, label: event.target.value }))}
           />
         </div>
-        <span className={`audible-pill ${audibleState.toLowerCase()}`}>{audibleState}</span>
+        <div className="channel-state-actions">
+          <span className={`audible-pill ${audibleState.toLowerCase()}`}>{audibleState}</span>
+          <button
+            type="button"
+            className="channel-delete"
+            aria-label={`Remove ${channel.label}`}
+            disabled={!canRemove}
+            onClick={onRemove}
+          >
+            ×
+          </button>
+        </div>
       </div>
 
       <div className="channel-actions">
