@@ -579,30 +579,29 @@ function App() {
             </div>
           </section>
 
-          <div className="template-transfer" aria-label="Template transfer">
-            <span>Transfer</span>
-            <div className="template-transfer-actions">
-              <button
-                type="button"
-                className="icon-action"
-                onClick={copyCurrentConfigToClipboard}
-                aria-label="Copy current settings to clipboard"
-                data-tooltip="Copy current settings"
-                title="Copy current settings to clipboard"
-              >
-                <Copy aria-hidden="true" focusable="false" />
-              </button>
-              <button
-                type="button"
-                className="icon-action"
-                onClick={importConfigFromClipboard}
-                aria-label="Import from clipboard"
-                data-tooltip="Import from clipboard"
-                title="Import from clipboard"
-              >
-                <Import aria-hidden="true" focusable="false" />
-              </button>
-            </div>
+          <div className="template-transfer" aria-label="Copy or import template settings">
+            <button
+              type="button"
+              className="icon-action transfer-action"
+              onClick={copyCurrentConfigToClipboard}
+              aria-label="Copy current settings to clipboard"
+              data-tooltip="Copy current settings"
+              title="Copy current settings to clipboard"
+            >
+              <Copy aria-hidden="true" focusable="false" />
+              <span>Copy</span>
+            </button>
+            <button
+              type="button"
+              className="icon-action transfer-action"
+              onClick={importConfigFromClipboard}
+              aria-label="Import from clipboard"
+              data-tooltip="Import from clipboard"
+              title="Import from clipboard"
+            >
+              <Import aria-hidden="true" focusable="false" />
+              <span>Import</span>
+            </button>
           </div>
 
           <SaveList title="Templates" empty="No templates saved">

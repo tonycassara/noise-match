@@ -554,25 +554,12 @@ input[type='range'] {
 }
 
 .template-transfer {
-  align-items: center;
   border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr 1fr;
   margin: 0 12px 18px;
   padding-top: 12px;
-}
-
-.template-transfer span {
-  color: var(--text-m);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.template-transfer-actions {
-  display: flex;
-  gap: 8px;
 }
 
 .icon-action {
@@ -585,6 +572,16 @@ input[type='range'] {
 .icon-action svg {
   height: 19px;
   width: 19px;
+}
+
+.transfer-action {
+  gap: 6px;
+  width: 100%;
+}
+
+.transfer-action span {
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .icon-action::after {
