@@ -62,12 +62,16 @@
 
 .github-link:hover {
   border-color: var(--accent);
-  color: var(--accent-strong);
 }
 
-.github-link svg {
-  height: 20px;
-  width: 20px;
+.github-link:hover img {
+  opacity: 0.78;
+}
+
+.github-link img {
+  display: block;
+  height: 22px;
+  width: 22px;
 }
 
 .eyebrow {
