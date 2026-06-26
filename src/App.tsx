@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { ClipboardCopy, ClipboardPaste, X } from 'lucide-react'
 import './App.css'
 
 import { NoiseMatchAudioEngine } from './audioEngine'
@@ -588,7 +589,7 @@ function App() {
                 aria-label="Copy current settings to clipboard"
                 title="Copy current settings to clipboard"
               >
-                <ClipboardCopyIcon />
+                <ClipboardCopy aria-hidden="true" focusable="false" />
               </button>
               <button
                 type="button"
@@ -597,7 +598,7 @@ function App() {
                 aria-label="Import from clipboard"
                 title="Import from clipboard"
               >
-                <ClipboardImportIcon />
+                <ClipboardPaste aria-hidden="true" focusable="false" />
               </button>
             </div>
           </div>
@@ -760,7 +761,7 @@ function ChannelStrip({
             disabled={!canRemove}
             onClick={onRemove}
           >
-            ×
+            <X aria-hidden="true" focusable="false" />
           </button>
         </div>
       </div>
@@ -1276,7 +1277,7 @@ function SaveItem({
           aria-label={`Delete template ${config.name}`}
           onClick={onDelete}
         >
-          ×
+          <X aria-hidden="true" focusable="false" />
         </button>
       ) : null}
       <div>
@@ -1528,68 +1529,6 @@ function formatTonePartials(waveform: Waveform, frequencyHz: number) {
   }
 
   return `${partials} audible partials`
-}
-
-function ClipboardCopyIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path
-        d="M9 5H7.7C6.2 5 5 6.2 5 7.7v9.6C5 18.8 6.2 20 7.7 20h7.6c1.5 0 2.7-1.2 2.7-2.7V16"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M11 4.5h3.5c.8 0 1.5.7 1.5 1.5v6.5c0 .8-.7 1.5-1.5 1.5H10c-.8 0-1.5-.7-1.5-1.5V7"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M8.5 7 11 4.5 13.5 7M11 4.5v6.8"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.8"
-      />
-    </svg>
-  )
-}
-
-function ClipboardImportIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path
-        d="M9 5H7.7C6.2 5 5 6.2 5 7.7v9.6C5 18.8 6.2 20 7.7 20h7.6c1.5 0 2.7-1.2 2.7-2.7V16"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M11 4.5h3.5c.8 0 1.5.7 1.5 1.5v6.5c0 .8-.7 1.5-1.5 1.5H10c-.8 0-1.5-.7-1.5-1.5V7"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M8.5 9.3 11 11.8l2.5-2.5M11 4.5v7.3"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.8"
-      />
-    </svg>
-  )
 }
 
 export default App
